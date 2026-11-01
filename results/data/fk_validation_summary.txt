@@ -1,0 +1,20 @@
+Raw orientation difference to MuJoCo site (no offset compensation): 1.570796 .. 1.570796 rad (pi/2 = 1.570796) -> constant frame offset
+Errors below are after compensating the fixed Ry(-90 deg) site offset.
+
+Named configurations
+------------------------------------------------------------------------
+configuration               pos err [m]  rot err [rad]   FK position [m]
+zero (L-pose)                 1.142e-10      2.980e-08   [+0.3914 -0.0000 +0.2265]
+pan +45 deg                   6.914e-09      2.980e-08   [+0.2881 -0.2493 +0.2265]
+shoulder_lift +45 deg         1.142e-10      3.650e-08   [+0.3747 -0.0000 -0.0335]
+elbow_flex +60 deg            1.142e-10      2.107e-08   [+0.2420 -0.0000 -0.0269]
+wrist_flex -45 deg            1.142e-10      2.980e-08   [+0.3503 -0.0000 +0.3414]
+wrist_roll +90 deg            9.796e-11      0.000e+00   [+0.3914 -0.0081 +0.2342]
+folded (rest-like)            1.142e-10      2.107e-08   [+0.1805 -0.0000 +0.0189]
+mixed A                       4.514e-09      4.215e-08   [+0.2549 -0.1098 +0.0550]
+mixed B                       1.008e-08      2.980e-08   [+0.1769 +0.3346 +0.2933]
+
+Random configurations inside joint limits: n = 1000, seed = 0
+------------------------------------------------------------------------
+position error  [m]  : max 1.476e-08   mean 7.946e-09   rms 9.058e-09
+rotation error [rad] : max 6.664e-08   mean 3.552e-08   rms 3.863e-08

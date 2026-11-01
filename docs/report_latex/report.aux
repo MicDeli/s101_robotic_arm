@@ -1,0 +1,56 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Kinematic model}{1}{section.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Robot and coordinate frames}{1}{subsection.1.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces The SO-101 rendered from the CAD meshes at $q=0$: labelled parts, joint numbers and axes, and key dimensions in mm (side view projections; the top view shows the lateral offsets).}}{1}{figure.caption.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:labelled}{{1}{1}{The SO-101 rendered from the CAD meshes at $q=0$: labelled parts, joint numbers and axes, and key dimensions in mm (side view projections; the top view shows the lateral offsets)}{figure.caption.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Frames.}{1}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Zero configuration.}{2}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Joints.}{2}{section*.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Joint axes and limits of the SO-101 in the base frame at $q=0$ (source: official URDF).}}{2}{table.caption.5}\protected@file@percent }
+\newlabel{tab:joints}{{1}{2}{Joint axes and limits of the SO-101 in the base frame at $q=0$ (source: official URDF)}{table.caption.5}{}}
+\@writefile{toc}{\contentsline {paragraph}{Out-of-plane offset.}{2}{section*.6}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Kinematic skeleton: (a) side view at $q=0$; (b) side view and (c) top view at $q=(0.5,-0.4,0.9,0.3,-1.2)$ rad. Frame triads: $x$ red, $y$ green, $z$ blue.}}{2}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:skeleton}{{2}{2}{Kinematic skeleton: (a) side view at $q=0$; (b) side view and (c) top view at $q=(0.5,-0.4,0.9,0.3,-1.2)$ rad. Frame triads: $x$ red, $y$ green, $z$ blue}{figure.caption.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Product-of-Exponentials representation}{2}{subsection.1.2}\protected@file@percent }
+\newlabel{sec:poe}{{1.2}{2}{Product-of-Exponentials representation}{subsection.1.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Screw axes.}{2}{section*.8}\protected@file@percent }
+\citation{lynch}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Screw axes $S_i=(w_i,v_i)$ of the SO-101 in the base frame.}}{3}{table.caption.9}\protected@file@percent }
+\newlabel{tab:screw}{{2}{3}{Screw axes $S_i=(w_i,v_i)$ of the SO-101 in the base frame}{table.caption.9}{}}
+\@writefile{toc}{\contentsline {paragraph}{Home pose.}{3}{section*.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{How the parameters were obtained.}{3}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}Forward kinematics derivation}{3}{subsection.1.3}\protected@file@percent }
+\newlabel{sec:fk}{{1.3}{3}{Forward kinematics derivation}{subsection.1.3}{}}
+\newlabel{eq:poe}{{2}{3}{Forward kinematics derivation}{equation.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Why this product.}{3}{section*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Matrix exponential of a revolute joint.}{3}{section*.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Planar reduction as an analytic check.}{4}{section*.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Worked example.}{4}{section*.15}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Link to the Jacobian.}{4}{section*.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.4}Implementation}{4}{subsection.1.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Files of the Phase~1 implementation.}}{4}{table.caption.17}\protected@file@percent }
+\newlabel{tab:files}{{3}{4}{Files of the Phase~1 implementation}{table.caption.17}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.5}Validation}{5}{subsection.1.5}\protected@file@percent }
+\newlabel{sec:valid}{{1.5}{5}{Validation}{subsection.1.5}{}}
+\@writefile{toc}{\contentsline {paragraph}{Unit tests.}{5}{section*.18}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Unit tests of the forward kinematics.}}{5}{table.caption.19}\protected@file@percent }
+\newlabel{tab:tests}{{4}{5}{Unit tests of the forward kinematics}{table.caption.19}{}}
+\@writefile{toc}{\contentsline {paragraph}{Comparison with MuJoCo.}{5}{section*.20}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces FK versus MuJoCo. The nine named configurations are within $1.0\times 10^{-8}$~m and $4.2\times 10^{-8}$~rad.}}{5}{table.caption.21}\protected@file@percent }
+\newlabel{tab:mujoco}{{5}{5}{FK versus MuJoCo. The nine named configurations are within $1.0\times 10^{-8}$~m and $4.2\times 10^{-8}$~rad}{table.caption.21}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Distribution of the FK error against MuJoCo (position in nm, orientation in nrad).}}{5}{figure.caption.22}\protected@file@percent }
+\newlabel{fig:errors}{{3}{5}{Distribution of the FK error against MuJoCo (position in nm, orientation in nrad)}{figure.caption.22}{}}
+\@writefile{toc}{\contentsline {paragraph}{Comparison with the physical arm.}{6}{section*.23}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Link dimensions: CAD model versus measurement on the arm.}}{6}{table.caption.24}\protected@file@percent }
+\newlabel{tab:measured}{{6}{6}{Link dimensions: CAD model versus measurement on the arm}{table.caption.24}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.6}Limitations and discussion}{6}{subsection.1.6}\protected@file@percent }
+\bibcite{lynch}{1}
+\bibcite{sorarm}{2}
+\bibcite{mujoco}{3}
+\citation{sorarm}
+\citation{mujoco}
+\gdef \@abspage@last{7}
