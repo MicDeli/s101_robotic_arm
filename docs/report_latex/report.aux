@@ -48,9 +48,38 @@
 \@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Link dimensions: CAD model versus measurement on the arm.}}{6}{table.caption.24}\protected@file@percent }
 \newlabel{tab:measured}{{6}{6}{Link dimensions: CAD model versus measurement on the arm}{table.caption.24}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.6}Limitations and discussion}{6}{subsection.1.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Jacobian and inverse kinematics}{7}{section.2}\protected@file@percent }
+\newlabel{sec:ik}{{2}{7}{Jacobian and inverse kinematics}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Geometric Jacobian}{7}{subsection.2.1}\protected@file@percent }
+\newlabel{eq:jacobian}{{6}{7}{Geometric Jacobian}{equation.6}{}}
+\newlabel{eq:jacobian-column}{{7}{7}{Geometric Jacobian}{equation.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Damped least-squares inverse kinematics}{7}{subsection.2.2}\protected@file@percent }
+\newlabel{eq:ik-error}{{8}{7}{Damped least-squares inverse kinematics}{equation.8}{}}
+\newlabel{eq:dls}{{9}{7}{Damped least-squares inverse kinematics}{equation.9}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Files of the Phase~2 implementation.}}{8}{table.caption.25}\protected@file@percent }
+\newlabel{tab:ikfiles}{{7}{8}{Files of the Phase~2 implementation}{table.caption.25}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Implementation}{8}{subsection.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Validation}{8}{subsection.2.4}\protected@file@percent }
+\newlabel{sec:ik-valid}{{2.4}{8}{Validation}{subsection.2.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Jacobian.}{8}{section*.26}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Named targets.}{8}{section*.27}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces IK versus MuJoCo for the five named reachable targets. Tolerances: $10^{-4}$~m and $10^{-3}$~rad.}}{8}{table.caption.28}\protected@file@percent }
+\newlabel{tab:ikresults}{{8}{8}{IK versus MuJoCo for the five named reachable targets. Tolerances: $10^{-4}$~m and $10^{-3}$~rad}{table.caption.28}{}}
 \bibcite{lynch}{1}
+\@writefile{toc}{\contentsline {paragraph}{Unreachable target.}{9}{section*.29}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Final position error for every IK validation case. Blue bars pass; the dashed line is the $10^{-4}$~m tolerance. The unreachable target is shown for comparison.}}{9}{figure.caption.30}\protected@file@percent }
+\newlabel{fig:ikerrors}{{4}{9}{Final position error for every IK validation case. Blue bars pass; the dashed line is the $10^{-4}$~m tolerance. The unreachable target is shown for comparison}{figure.caption.30}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Iterations used by the DLS solver for each case. The unreachable target consumes the full 200-iteration budget.}}{9}{figure.caption.31}\protected@file@percent }
+\newlabel{fig:ikiter}{{5}{9}{Iterations used by the DLS solver for each case. The unreachable target consumes the full 200-iteration budget}{figure.caption.31}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Discussion}{9}{subsection.2.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces IK diagram for target A in pose mode, in the style of Figure~\ref {fig:skeleton}: solid black is the IK solution, dashed grey the start configuration $q_0$, the star the target position and the dashed triads the target orientation.}}{10}{figure.caption.32}\protected@file@percent }
+\newlabel{fig:ikcase}{{6}{10}{IK diagram for target A in pose mode, in the style of Figure~\ref {fig:skeleton}: solid black is the IK solution, dashed grey the start configuration $q_0$, the star the target position and the dashed triads the target orientation}{figure.caption.32}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces The unreachable target U: the solver stops 3.6~cm short of the star after the iteration budget.}}{10}{figure.caption.33}\protected@file@percent }
+\newlabel{fig:ikcaseu}{{7}{10}{The unreachable target U: the solver stops 3.6~cm short of the star after the iteration budget}{figure.caption.33}{}}
 \bibcite{sorarm}{2}
 \bibcite{mujoco}{3}
+\bibcite{buss}{4}
 \citation{sorarm}
 \citation{mujoco}
-\gdef \@abspage@last{7}
+\citation{buss}
+\gdef \@abspage@last{11}

@@ -1,0 +1,20 @@
+Named reachable targets (from tests/test_ik.py)
+------------------------------------------------------------------------
+target   mode     status iters  pos err [m]          rot err
+A        position PASS       3    6.870e-06 m             free
+A        pose     PASS       3    5.641e-05 m    6.280e-05 rad
+B        position PASS       3    2.050e-06 m             free
+B        pose     PASS       3    5.078e-05 m    1.214e-04 rad
+C        position PASS       2    9.984e-05 m             free
+C        pose     PASS       4    1.877e-05 m    5.547e-05 rad
+D        position PASS       3    1.243e-05 m             free
+D        pose     PASS       3    6.184e-05 m    3.657e-05 rad
+E        position PASS       3    2.683e-06 m             free
+E        pose     PASS       3    4.614e-05 m    9.732e-05 rad
+
+Unreachable target
+------------------------------------------------------------------------
+U        position PASS     200    3.620e-02 m (not converged)
+
+IK validation:
+PASS

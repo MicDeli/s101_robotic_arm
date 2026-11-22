@@ -1,4 +1,4 @@
-# Technical Report – Section 1: Kinematic Model of the LeRobot SO-101
+# Technical Report – Kinematic Model and Inverse Kinematics of the LeRobot SO-101
 
 Nov 1, 2026&#32;
 
@@ -185,8 +185,113 @@ The model is a rigid-body kinematic model of the CAD geometry, accurate to a few
 - **Five degrees of freedom.** Five joints cannot reach an arbitrary pose in SE(3): the reachable tool poses form a five-dimensional set, so the inverse-kinematics phase must treat position and orientation targets accordingly. The gripper jaw is not part of the chain and does not change the tool frame.
 - **Tool frame.** {e} is the URDF `gripper_frame_link`, placed at the middle of the jaws and 7.9 mm off the roll axis. A different tool point would only change M, not the screw axes.
 
+## 2.1 Geometric Jacobian
+
+Differentiating the forward kinematics gives the geometric (point) Jacobian, which maps joint rates to the linear and angular velocity of the tool point expressed in the base frame:
+
+```latex
+\begin{bmatrix}\dot p_e\\ \omega_e\end{bmatrix} = J(q)\,\dot q, \qquad J(q)\in\mathbb{R}^{6\times5}
+```
+
+For revolute joint i the column is
+
+```latex
+J_i(q) = \begin{bmatrix} w_i(q)\times\bigl(p_e(q)-p_i(q)\bigr) \\ w_i(q) \end{bmatrix}
+```
+
+where w\_i(q) and p\_i(q) are the joint axis and a point on it after the preceding joints have moved. The implementation does not build intermediate frames: it carries each axis through the same product of exponentials used for the forward kinematics, so that w\_i(q) = R\_{0,i−1}(q) w\_i and p\_i(q) = R\_{0,i−1}(q) p\_i + o\_{0,i−1}(q).
+
+This is the **point** Jacobian: its linear block is the velocity of the tool point. The space Jacobian used in §1.3 has linear part −ω × p and differs by a position-dependent transform; the point form is the one the controller needs, so it is the one implemented. With five joints the matrix has rank at most five.
+
+## 2.2 Damped least-squares inverse kinematics
+
+The target is either a position p\* ∈ ℝ³ (orientation free) or a homogeneous pose T\* ∈ SE(3). The error at configuration q is
+
+```latex
+e(q) = \begin{bmatrix} p^\ast - p_e(q) \\ \alpha\,\mathrm{Log}\bigl(R^\ast R_e(q)^{\mathsf T}\bigr) \end{bmatrix}, \qquad \alpha = 0.2
+```
+
+where Log maps a rotation matrix to its rotation vector and α weights the orientation part; for a position target only the first block is used. The update is the damped least-squares (Levenberg–Marquardt) step
+
+```latex
+\Delta q = J^{\mathsf T}\bigl(JJ^{\mathsf T} + \lambda^2 I\bigr)^{-1} e, \qquad \lambda = 0.01
+```
+
+followed by a cap ‖Δq‖ ≤ 0.2 rad and clipping to the joint limits. Iteration stops when the position error is at most 10⁻⁴ m and, for a pose target, the orientation error at most 10⁻³ rad, or after 200 iterations.
+
+Damping keeps the step bounded near singularities, where JJᵀ is ill-conditioned; the price is slower convergence close to the target, which is why the tolerance and the iteration budget are both needed. Because the arm has five degrees of freedom, an arbitrary 6D pose is generally not reachable: pose mode solves the six-dimensional error in the least-squares sense and reports the residual orientation error.
+
+## 2.3 Implementation
+
+The Jacobian and the solver are kept separate from the model constants, in the same package as the forward kinematics.
+
+| File | Content |
+| --- | --- |
+| `src/jacobian.py` | `geometric_jacobian(q)`: 6×5 point Jacobian in the base frame |
+| `src/inverse_kinematics.py` | `inverse_kinematics(target, q0, ...)`: DLS solver; `IKResult` with q, convergence flag, iterations and errors |
+| `tests/test_ik.py` | 13 unit tests: Jacobian versus finite differences, five targets in position and pose mode, unreachable target, iteration budget |
+| `simulation/validate_jacobian_fd.py` | Jacobian versus central finite differences over 500 random configurations: CSV, summary and histogram in `results/` |
+| `simulation/validate_ik_mujoco.py` | IK versus MuJoCo: CSV, summary and error figures in `results/` |
+| `tools/plot_ik_cases.py` | One kinematic diagram per IK validation case |
+
+*Table 7 – Files of the Phase 2 implementation.*
+
+```python
+from src.inverse_kinematics import inverse_kinematics
+
+result = inverse_kinematics(T_target, q0)   # (4, 4) pose or (3,) position
+result.q, result.converged, result.iterations
+result.position_error, result.orientation_error
+```
+
+## 2.4 Validation
+
+**Jacobian.** The analytic Jacobian was compared with central finite differences of the forward kinematics over 500 random configurations inside the joint limits (`simulation/validate_jacobian_fd.py`, seed 0, step 10⁻⁶ rad). The largest absolute difference over all entries was 2.4·10⁻¹⁰, the size expected from the finite-difference truncation; the unit test checks one configuration to 10⁻⁸.
+
+**Named targets.** Five targets A–E are defined by joint configurations in `tests/test_ik.py`; their Cartesian pose is computed with the forward kinematics, so they are reachable by construction. The IK is started from the same configuration plus a fixed offset q₀ = (0.1, −0.2, 0.3, −0.1, 0.2) rad and solved both as a position target and as a full pose. The achieved pose is read back from the independent MuJoCo model. Every case converges within four iterations (Table 8).
+
+| Target | Mode | Iterations | Position error \[m\] | Orientation error \[rad\] |
+| --- | --- | --- | --- | --- |
+| A | position | 3 | 6.87·10⁻⁶ | free |
+| A | pose | 3 | 5.64·10⁻⁵ | 6.28·10⁻⁵ |
+| B | position | 3 | 2.05·10⁻⁶ | free |
+| B | pose | 3 | 5.08·10⁻⁵ | 1.21·10⁻⁴ |
+| C | position | 2 | 9.98·10⁻⁵ | free |
+| C | pose | 4 | 1.88·10⁻⁵ | 5.55·10⁻⁵ |
+| D | position | 3 | 1.24·10⁻⁵ | free |
+| D | pose | 3 | 6.18·10⁻⁵ | 3.66·10⁻⁵ |
+| E | position | 3 | 2.68·10⁻⁶ | free |
+| E | pose | 3 | 4.61·10⁻⁵ | 9.73·10⁻⁵ |
+
+*Table 8 – IK versus MuJoCo for the five named reachable targets. Tolerances: 10⁻⁴ m and 10⁻³ rad.*
+
+**Unreachable target.** The point (0.5, 0, 0) m lies about 3.6 cm outside the workspace. The solver correctly reports no convergence after the 200-iteration budget, with a final position error of 3.62·10⁻² m; it does not falsely claim success.
+
+&#91;image: IK validation position errors&#93;
+
+*Figure 4 – Final position error for every IK validation case. Blue bars pass; the dashed line is the 10⁻⁴ m tolerance. The unreachable target is shown for comparison.*
+
+&#91;image: IK iterations per case&#93;
+
+*Figure 5 – Iterations used by the DLS solver for each case. The unreachable target consumes the full 200-iteration budget.*
+
+&#91;image: IK diagram for target A in pose mode&#93;
+
+*Figure 6 – IK diagram for target A in pose mode, in the style of Figure 2: solid black is the IK solution, dashed grey the start configuration q₀, the star the target position and the dashed triads the target orientation.*
+
+&#91;image: IK diagram for the unreachable target U&#93;
+
+*Figure 7 – The unreachable target U: the solver stops 3.6 cm short of the star after the iteration budget.*
+
+## 2.5 Discussion
+
+The solver is a local method: it converges quickly from the offsets used here, but a different initial configuration can converge to another joint solution or, near a singularity, stall. The smallest singular value of J at the tested configurations is about 0.06–0.14, so damping is essential; a smaller λ would converge faster but amplify joint rates near singularities, while a larger λ would slow the final approach. Joint-limit clipping can also prevent convergence when the unconstrained step would leave the valid range.
+
+The five-degree-of-freedom structure limits pose targets: a full 6D pose is solved only in the least-squares sense, and the residual orientation error in Table 8 is the part the arm cannot realize. The validation uses the same CAD geometry as the model, so it verifies the implementation rather than the hardware; on the real arm the calibration offsets and servo compliance discussed in §1.6 will dominate the remaining error.
+
 ### References
 
 1. K. M. Lynch and F. C. Park, *Modern Robotics: Mechanics, Planning, and Control*, Cambridge University Press, 2017, ch. 3–4 (screw axes, product of exponentials).
 2. TheRobotStudio, [SO-ARM100 repository, `Simulation/SO101`](https://github.com/TheRobotStudio/SO-ARM100/tree/main/Simulation/SO101): `so101_new_calib.urdf`, `so101_new_calib.xml` and meshes.
 3. E. Todorov, T. Erez and Y. Tassa, “MuJoCo: A physics engine for model-based control,” *IEEE/RSJ IROS*, 2012.
+4. S. R. Buss, “Introduction to Inverse Kinematics with Jacobian Transpose, Pseudoinverse and Damped Least Squares methods,” University of California, San Diego, 2004.
