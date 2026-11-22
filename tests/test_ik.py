@@ -21,6 +21,9 @@ Q0_OFFSET = np.array([0.1, -0.2, 0.3, -0.1, 0.2])
 POSITION_TOL = 1e-4
 ORIENTATION_TOL = 1e-3
 
+# The unreachable target is outside the robot's workspace
+UNREACHABLE_TARGET = np.array([0.5, 0.0, 0.0])
+
 
 def test_geometric_jacobian_matches_finite_differences():
     q = np.array([0.2, -0.4, 0.6, -0.3, 0.5])
@@ -67,8 +70,7 @@ def test_ik_reaches_target(goal, mode):
 
 
 def test_ik_reports_unreachable_target():
-    p_target = np.array([2.0, 0.0, 0.0])
-    result = inverse_kinematics(p_target, np.zeros(5), max_iterations=25)
+    result = inverse_kinematics(UNREACHABLE_TARGET, np.zeros(5), max_iterations=25)
 
     assert not result.converged
     assert result.iterations == 25
