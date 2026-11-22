@@ -1,0 +1,12 @@
+case,mode,converged,iterations,pos_err_m,rot_err_rad,limits_ok,passed
+A,position,True,3,6.869708e-06,,True,True
+A,pose,True,3,5.640993e-05,6.279922e-05,True,True
+B,position,True,3,2.049764e-06,,True,True
+B,pose,True,3,5.077748e-05,1.214431e-04,True,True
+C,position,True,2,9.983568e-05,,True,True
+C,pose,True,4,1.877196e-05,5.546785e-05,True,True
+D,position,True,3,1.243172e-05,,True,True
+D,pose,True,3,6.184412e-05,3.657403e-05,True,True
+E,position,True,3,2.683281e-06,,True,True
+E,pose,True,3,4.614190e-05,9.731921e-05,True,True
+U,position,False,200,3.619773e-02,,True,True
