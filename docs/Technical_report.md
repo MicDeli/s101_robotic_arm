@@ -230,6 +230,7 @@ The Jacobian and the solver are kept separate from the model constants, in the s
 | `src/jacobian.py` | `geometric_jacobian(q)`: 6×5 point Jacobian in the base frame |
 | `src/inverse_kinematics.py` | `inverse_kinematics(target, q0, ...)`: DLS solver; `IKResult` with q, convergence flag, iterations and errors |
 | `tests/test_ik.py` | 13 unit tests: Jacobian versus finite differences, five targets in position and pose mode, unreachable target, iteration budget |
+| `simulation/validate_jacobian_fd.py` | Jacobian versus central finite differences over 500 random configurations: CSV, summary and histogram in `results/` |
 | `simulation/validate_ik_mujoco.py` | IK versus MuJoCo: CSV, summary and error figures in `results/` |
 | `tools/plot_ik_cases.py` | One kinematic diagram per IK validation case |
 
@@ -245,7 +246,7 @@ result.position_error, result.orientation_error
 
 ## 2.4 Validation
 
-**Jacobian.** The analytic Jacobian was compared with central finite differences of the forward kinematics over 500 random configurations inside the joint limits. The largest absolute difference over all entries was 1.9·10⁻¹⁰, the size expected from the finite-difference truncation; the unit test checks one configuration to 10⁻⁸.
+**Jacobian.** The analytic Jacobian was compared with central finite differences of the forward kinematics over 500 random configurations inside the joint limits (`simulation/validate_jacobian_fd.py`, seed 0, step 10⁻⁶ rad). The largest absolute difference over all entries was 2.4·10⁻¹⁰, the size expected from the finite-difference truncation; the unit test checks one configuration to 10⁻⁸.
 
 **Named targets.** Five targets A–E are defined by joint configurations in `tests/test_ik.py`; their Cartesian pose is computed with the forward kinematics, so they are reachable by construction. The IK is started from the same configuration plus a fixed offset q₀ = (0.1, −0.2, 0.3, −0.1, 0.2) rad and solved both as a position target and as a full pose. The achieved pose is read back from the independent MuJoCo model. Every case converges within four iterations (Table 8).
 

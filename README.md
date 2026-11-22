@@ -29,6 +29,7 @@ The official SO-101 model (URDF, MuJoCo XML, meshes) is included in `models/so10
 ```bash
 pytest tests                                   # unit tests (FK, Jacobian, IK)
 python simulation/validate_fk_mujoco.py        # FK vs MuJoCo, writes results/
+python simulation/validate_jacobian_fd.py      # Jacobian vs finite differences, writes results/
 python simulation/validate_ik_mujoco.py        # DLS IK vs MuJoCo, writes results/
 python tools/plot_kinematics.py                # kinematic diagram figure
 python tools/plot_ik_cases.py                  # one diagram per IK validation case
@@ -47,6 +48,7 @@ Final demonstration (Phase 3, not yet implemented): `simulation/mujoco_demo.py`,
 | `src/jacobian.py` | `geometric_jacobian(q)` (6×5 point Jacobian `[p_dot; omega]`) |
 | `src/inverse_kinematics.py` | `inverse_kinematics(target, q0, ...)` (DLS), `IKResult` |
 | `simulation/validate_fk_mujoco.py` | FK validation against the MuJoCo model |
+| `simulation/validate_jacobian_fd.py` | Analytic Jacobian versus central finite differences over random configurations |
 | `simulation/validate_ik_mujoco.py` | IK validation against MuJoCo: named reachable targets (position and pose) and an unreachable target |
 | `tests/` | FK, Jacobian and IK unit tests (`test_fk.py`, `test_ik.py`) |
 | `tools/plot_kinematics.py` | Kinematic diagram (`so101_kinematic_diagram.png`) |

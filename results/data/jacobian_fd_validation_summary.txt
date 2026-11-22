@@ -1,0 +1,13 @@
+Jacobian versus central finite differences of the forward kinematics
+------------------------------------------------------------------------
+configurations : 500
+seed           : 0
+step h [rad]   : 1.0e-06
+
+largest absolute difference over all entries : 2.438e-10
+largest position-block difference            : 1.363e-10
+largest angular-block difference             : 2.438e-10
+mean of per-configuration maximum            : 1.134e-10
+
+The difference is the finite-difference truncation error, O(h^2), so the
+analytic Jacobian is correct to floating-point accuracy.
